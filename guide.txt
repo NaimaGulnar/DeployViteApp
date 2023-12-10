@@ -1,0 +1,143 @@
+STEP-BY-STEP GUIDE TO DEPLOY A VITE REACT APP ON GITHUB:
+
+
+Step 1: Create a new folder and open it in VS Code.
+
+Step 2: Open the terminal in VS Code and write the following commands to create a new Vite App:
+
+            npm create vite@latest
+
+- Enter your Project Name (e.g. my-vite-app)
+- Choose React by using the arrow keys
+- Choose JavaScript by using the arrow keys
+
+- Now go to the project folder:
+
+            cd my-vite-app
+
+- Then install the packages:
+
+            npm install
+
+- And here you go, your project is live on your localhost! 
+- Run this command and click on the link to have a look on your Vite Project: 
+
+            npm run dev
+
+Step 3: Open your GitHub account and create a new repository, give your repository a name and click on "Create Repository".
+
+Step 4: Now come back to your VS Code project and run these commands:
+
+- Initialize git:
+
+            git init 
+
+- Stage all the changes in the current directory:
+
+            git add .
+
+- Save the staged changes as a new version in the project's history with a message "add: initial files": 
+
+            git commit -m "add: initial files" 
+
+- Rename the current branch to "main" in Git:
+
+            git branch -M main 
+
+- Set up a new remote repository for your local Git respository by creating a remote named "origin" and associate it with the URL (of the repository where you want to push your code):
+
+            git remote add origin https://github.com/[USERNAME]/[REPO_NAME] 
+
+- Push the committed changes from your local "main" branch to the "main" branch on the remote repository named "origin":
+
+            git push -u origin main
+
+- Now, after refreshing your GitHub Page, you will see your directories and files in that repository.
+
+Step 5: Now, in VS Code Project, in the "vite.config.js" file, setup base by adding:
+
+            base: "/[REPO_NAME]/
+
+Step 6: Create a folder named ".github", in that folder, create another folder named "workflows" and inside that folder, create a new file "deploy.yml" and paste the exact code below:
+
+            name: Deploy
+            on:
+            push:
+                branches:
+                - main
+            jobs:
+            build:
+                name: Build
+                runs-on: ubuntu-latest
+                steps:
+                - name: Checkout repo
+                    uses: actions/checkout@v2
+                - name: Setup Node
+                    uses: actions/setup-node@v1
+                    with:
+                    node-version: 16
+                - name: Install dependencies
+                    uses: bahmutov/npm-install@v1
+                - name: Build project
+                    run: npm run build
+                - name: Upload production-ready build files
+                    uses: actions/upload-artifact@v2
+                    with:
+                    name: production-files
+                    path: ./dist
+            deploy:
+                name: Deploy
+                needs: build
+                runs-on: ubuntu-latest
+                if: github.ref == 'refs/heads/main'
+                steps:
+                - name: Download artifact
+                    uses: actions/download-artifact@v2
+                    with:
+                    name: production-files
+                    path: ./dist
+                - name: Deploy to GitHub Pages
+                    uses: peaceiris/actions-gh-pages@v3
+                    with:
+                    github_token: ${{ secrets.GITHUB_TOKEN }}
+                    publish_dir: ./dist
+
+Step 7: Now push it to GitHub by running the following commannds:
+
+            git add . 
+            git commit -m "add: deploy workflow" 
+            git push
+
+Step 8: Now go to your GitHub repository.
+
+- Go to:    
+
+Settings > Actions > General > Workflow permissions > Read and write permissions > Save
+
+- Now go to Actions, wait for a while while the process is going on. 
+- There will be an error in the deploy process!
+
+- Then go to:    
+
+Build > Re-run jobs > Re-run failed jobs  
+
+- Now go to:     
+
+Settings > Pages > Build and Deployment > Branch > Select gh-pages > Save
+
+
+- And it's done!!
+- Your Vite Project is deployed on GitHub.
+- After refreshing your page, you can see something like this: Your site is live at https://[USERNAME].github.io/[REPO_NAME]/
+- You can add this link to your repository's About section and see your live website by clicking on that link.
+
+
+- If you did any changes to your code, then just push it to GitHub, it'll deploy automaatically:
+
+            git add . 
+            git commit -m "fix: some bug" 
+            git push
+
+
+
+HAPPY CODING!!
