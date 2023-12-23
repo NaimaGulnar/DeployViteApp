@@ -56,7 +56,7 @@ Step 4: Now come back to your VS Code project and run these commands:
 
 Step 5: Now, in VS Code Project, in the "vite.config.js" file, setup base by adding:
 
-            base: "/[REPO_NAME]/
+            base: "/[REPO_NAME]/"
 
 Step 6: Create a folder named ".github", in that folder, create another folder named "workflows" and inside that folder, create a new file "deploy.yml" and paste the exact code below:
 
