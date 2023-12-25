@@ -44,9 +44,10 @@ Step 4: Now come back to your VS Code project and run these commands:
 
             git branch -M main 
 
-- Set up a new remote repository for your local Git respository by creating a remote named "origin" and associate it with the URL (of the repository where you want to push your code):
+- Set up a new remote repository for your local Git respository by creating a remote named "origin" and associate it with the URL (of the repository where you want to push your code) 
+NOTE: This URL is available on your GitHub page, so you can just copy and paste that code to avoid any errors!!
 
-            git remote add origin https://github.com/[USERNAME]/[REPO_NAME] 
+            git remote add origin https://github.com/[USERNAME]/[REPO_NAME]   
 
 - Push the committed changes from your local "main" branch to the "main" branch on the remote repository named "origin":
 
